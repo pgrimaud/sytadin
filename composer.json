@@ -1,0 +1,18 @@
+{
+  "name": "pgrimaud/sytadin",
+  "type": "library",
+  "description": "Real time information about road traffic in Paris",
+  "homepage": "https://github.com/pgrimaud/sytadin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pierre Grimaud",
+      "email": "grimaud.pierre@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Sytadin\\": "src/"
+    }
+  }
+}
