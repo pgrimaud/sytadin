@@ -35,6 +35,11 @@ class Api
     private $route;
 
     /**
+     * @var SectionCollection
+     */
+    private $sectionCollection;
+
+    /**
      * Api constructor.
      * @param null $entryPoint
      */
@@ -66,17 +71,15 @@ class Api
             if (!($i % 7)) {
                 $this->row++;
             } else {
-                $way = ($i <= 56) ? self::DIRECTION_EXTERIOR : self::DIRECTION_INTERIOR;
+                $way = ($i <= 49) ? self::DIRECTION_EXTERIOR : self::DIRECTION_INTERIOR;
                 $text = str_replace(["\n", "\r", "\t", " ", "é"], '', $text);
                 $this->dataFetched[$this->row][$way][] = $text;
             }
 
         });*/
 
-        $cleanDataFetched = $this->sanitizeContent();
-
-        $this->route = new Route();
-        print_r($cleanDataFetched);
+        $this->sanitizeContent();
+        $this->calculateRoute();
         exit;
 
         try {
@@ -87,13 +90,10 @@ class Api
         }
     }
 
-    /**
-     * @return array
-     */
     private function sanitizeContent()
     {
-        $results = $this->results;
-        $cleanValues = new RouteCollection();
+        $results = $this->dataFetched;
+        $this->sectionCollection = new SectionCollection();
 
         /**
          * @todo remove before prod
@@ -104,22 +104,26 @@ class Api
         foreach ($results as $way) {
             foreach ($way as $wayName => $gate) {
 
+                //if ($wayName != $this->)
+
                 //unset 'BP'
                 unset($gate[0]);
                 $gate = array_values($gate);
 
                 preg_match('/P.(.*)\(.*\)=>P.(.*)\(.*\)/x', $gate[0], $gates);
 
-                $cleanValues[$wayName][strtolower($gates[1])] = [
-                    'gate_start' => new Gate(strtolower($gates[1]), 'start'),
-                    'gate_end' => new Gate(strtolower($gates[2]), 'end'),
-                    'time' => (int)str_replace('mn', '', $gate[1]),
-                    'time_ref' => (int)str_replace('mn', '', $gate[2]),
-                    'kms' => (int)$gate[3],
-                ];
+
+                $section = new Section(new Gate(strtolower($gates[1]), 'start'),
+                    new Gate(strtolower($gates[2]), 'end'),
+                    [
+                        'time' => (int)str_replace('mn', '', $gate[1]),
+                        'time_ref' => (int)str_replace('mn', '', $gate[2]),
+                        'kms' => (int)$gate[3]
+                    ]);
+
+                $this->sectionCollection->add($section, $wayName);
             }
         }
-        return $cleanValues;
     }
 
     /**
@@ -148,5 +152,40 @@ class Api
         foreach ($gatesToCheck as $gate) {
             $this->$gate = new Gate($parameters[$gate], $gate);
         }
+
+        if ($parameters['direction'] == self::DIRECTION_EXTERIOR
+            || $parameters['direction'] == self::DIRECTION_INTERIOR
+        ) {
+            $this->route = new Route($this->start, $this->end, $parameters['direction']);
+        } else {
+            throw new \InvalidArgumentException('Parameter direction is invalid');
+        }
+    }
+
+    private function calculateRoute()
+    {
+        $referenceStart = array_search($this->route->getStart()->gate, Gate::listGates());
+        $referenceEnd = array_search($this->route->getEnd()->gate, Gate::listGates());
+
+        if ($referenceStart >= $referenceEnd) {
+            while ($referenceStart < count(Gate::listGates())) {
+                echo Gate::listGates()[$referenceStart] . PHP_EOL;
+                $referenceStart++;
+            }
+            //and restart
+            $cursor = 0;
+            while ($cursor <= $referenceEnd) {
+                echo Gate::listGates()[$cursor] . PHP_EOL;
+                $cursor++;
+            }
+        } else {
+            while ($referenceStart < $referenceEnd) {
+                echo Gate::listGates()[$referenceStart] . PHP_EOL;
+                $referenceStart++;
+            }
+        }
+
+        print_r($this->sectionCollection);
+
     }
 }

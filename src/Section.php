@@ -1,7 +1,7 @@
 <?php
 namespace Sytadin;
 
-class Route
+class Section
 {
     /**
      * @var Gate
@@ -14,21 +14,15 @@ class Route
     private $end;
 
     /**
-     * @var string@
+     * @var array
      */
-    private $way;
+    private $data;
 
-    /**
-     * Route constructor.
-     * @param Gate $start
-     * @param Gate $end
-     * @param $way
-     */
-    public function __construct(Gate $start, Gate $end, $way)
+    public function __construct(Gate $start, Gate $end, $data)
     {
         $this->start = $start;
         $this->end = $end;
-        $this->way = $way;
+        $this->data = $data;
     }
 
     /**
@@ -48,10 +42,10 @@ class Route
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getWay()
+    public function getData()
     {
-        return $this->way;
+        return $this->data;
     }
 }
