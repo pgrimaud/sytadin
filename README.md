@@ -7,7 +7,7 @@ Real time information about road traffic on the Paris beltway.
 ## Usage
 
 ```
-compose require pgrimaud/sytadin
+composer require pgrimaud/sytadin
 ```
 
 ```php
@@ -33,24 +33,24 @@ foreach ($route->getSections() as $section) {
     echo $section->getTime() . ' (ref :' . $section->getTimeReference() . ')' . PHP_EOL;
 }
 //orleans->italie
-//6 (ref : 4)
+//8 (ref :4)
 //italie->bercy
-//4 (ref : 2)
+//4 (ref :2)
 
 //reference time
 echo $route->getTimeReference() . PHP_EOL;
-//12
+//6
 
 //real time
 echo $route->getTime() . PHP_EOL;
-//6
+//12
 
 //kilometers
 echo $route->getKms() . PHP_EOL;
 //8
 ```
 
-If **time** is superior to the **TimeReference**, it means there is some traffic jams.
+If **Time** is superior to the **TimeReference**, it means there is some traffic jams.
 
 ## Gates available
 
