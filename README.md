@@ -30,9 +30,12 @@ echo $route->getEnd()->getName() . PHP_EOL;
 
 foreach ($route->getSections() as $section) {
     echo $section->getStart()->getName() . '->' . $section->getEnd()->getName() . PHP_EOL;
-    //orleans->italie
-    //italie->bercy
+    echo $section->getTime() . ' (ref :' . $section->getTimeReference() . ')' . PHP_EOL;
 }
+//orleans->italie
+//6 (ref : 4)
+//italie->bercy
+//4 (ref : 2)
 
 //reference time
 echo $route->getTimeReference() . PHP_EOL;
