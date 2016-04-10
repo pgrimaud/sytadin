@@ -175,6 +175,7 @@ class Api
         } else {
             while ($referenceStart < $referenceEnd) {
                 $section = $this->sectionCollection->getItems($this->route->getWay(), $referenceStart);
+                $this->route->setSection($section);
                 foreach ($section->getData() as $field => $number) {
                     $dataCalculated[$field] += (int)$number;
                 }
