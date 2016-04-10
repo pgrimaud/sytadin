@@ -56,11 +56,7 @@ class Api
     {
         $this->validParameters($parameters);
 
-        /**
-         * @todo uncomment before prod
-         */
-
-        /*$this->client->setHeader('HTTP_USER_AGENT',
+        $this->client->setHeader('HTTP_USER_AGENT',
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0) Gecko/20100101 Firefox/45.0');
         $crawler = $this->client->request('GET', $this->entryPoint);
 
@@ -72,22 +68,14 @@ class Api
                 $this->row++;
             } else {
                 $way = ($i <= 49) ? self::DIRECTION_EXTERIOR : self::DIRECTION_INTERIOR;
-                $text = str_replace(["\n", "\r", "\t", " ", "é"], '', $text);
+                $text = str_replace(["é", "\n", "\r", "\t", " "], ['e', ''], $text);
                 $this->dataFetched[$this->row][$way][] = $text;
             }
 
-        });*/
+        });
 
         $this->sanitizeContent();
         $this->calculateRoute();
-        exit;
-
-        try {
-
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-            exit;
-        }
     }
 
     private function sanitizeContent()
@@ -95,17 +83,8 @@ class Api
         $results = $this->dataFetched;
         $this->sectionCollection = new SectionCollection();
 
-        /**
-         * @todo remove before prod
-         */
-        $data = file_get_contents('demo.json');
-        $results = json_decode($data, JSON_OBJECT_AS_ARRAY);
-
         foreach ($results as $way) {
             foreach ($way as $wayName => $gate) {
-
-                //if ($wayName != $this->)
-
                 //unset 'BP'
                 unset($gate[0]);
                 $gate = array_values($gate);
@@ -117,7 +96,7 @@ class Api
                     new Gate(strtolower($gates[2]), 'end'),
                     [
                         'time' => (int)str_replace('mn', '', $gate[1]),
-                        'time_ref' => (int)str_replace('mn', '', $gate[2]),
+                        'timeReference' => (int)str_replace('mn', '', $gate[2]),
                         'kms' => (int)$gate[3]
                     ]);
 
@@ -167,25 +146,52 @@ class Api
         $referenceStart = array_search($this->route->getStart()->gate, Gate::listGates());
         $referenceEnd = array_search($this->route->getEnd()->gate, Gate::listGates());
 
+        $dataCalculated = [
+            'time' => 0,
+            'timeReference' => 0,
+            'kms' => 0
+        ];
+
         if ($referenceStart >= $referenceEnd) {
             while ($referenceStart < count(Gate::listGates())) {
-                echo Gate::listGates()[$referenceStart] . PHP_EOL;
+                $section = $this->sectionCollection->getItems($this->route->getWay(),
+                    $referenceStart);
+                $this->route->setSection($section);
+                foreach ($section->getData() as $field => $number) {
+                    $dataCalculated[$field] += (int)$number;
+                }
                 $referenceStart++;
             }
             //and restart
             $cursor = 0;
             while ($cursor <= $referenceEnd) {
-                echo Gate::listGates()[$cursor] . PHP_EOL;
+                $section = $this->sectionCollection->getItems($this->route->getWay(), $cursor);
+                $this->route->setSection($section);
+                foreach ($section->getData() as $field => $number) {
+                    $dataCalculated[$field] += (int)$number;
+                }
                 $cursor++;
             }
         } else {
             while ($referenceStart < $referenceEnd) {
-                echo Gate::listGates()[$referenceStart] . PHP_EOL;
+                $section = $this->sectionCollection->getItems($this->route->getWay(), $referenceStart);
+                foreach ($section->getData() as $field => $number) {
+                    $dataCalculated[$field] += (int)$number;
+                }
                 $referenceStart++;
             }
         }
 
-        print_r($this->sectionCollection);
+        foreach ($dataCalculated as $field => $value) {
+            $this->route->{'set' . ucwords($field)}($value);
+        }
+    }
 
+    /**
+     * @return Route
+     */
+    public function getRoute()
+    {
+        return $this->route;
     }
 }

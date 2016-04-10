@@ -14,10 +14,18 @@ class SectionCollection
     }
 
     /**
+     * @param null $type
+     * @param null $key
      * @return mixed
      */
-    public function getItems()
+    public function getItems($type = null, $key = null)
     {
-        return $this->items;
+        if ($type && $key !== null) {
+            return $this->items[$type][$key];
+        } else if ($type) {
+            return $this->items[$type];
+        } else {
+            return $this->items;
+        }
     }
 }

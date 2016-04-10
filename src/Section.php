@@ -48,4 +48,28 @@ class Section
     {
         return $this->data;
     }
+
+    /**
+     * @return string
+     */
+    public function getTime()
+    {
+        return $this->data['time'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeReference()
+    {
+        return $this->data['timeReference'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getKms()
+    {
+        return $this->data['kms'];
+    }
 }

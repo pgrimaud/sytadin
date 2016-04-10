@@ -51,4 +51,12 @@ class Gate
             'bagnolet',
         ];
     }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->gate;
+    }
 }
