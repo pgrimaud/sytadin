@@ -4,17 +4,13 @@
 
 Real time information about road traffic on the Paris beltway.
 
-Based on site http://www.sytadin.fr
-
 ## Usage
 
 ```
 compose require pgrimaud/sytadin
-
 ```
 
 ```php
-
 $api = new \Sytadin\Api();
 
 $parameters = [
@@ -33,23 +29,22 @@ echo $route->getEnd()->getName() . PHP_EOL;
 //bercy
 
 foreach ($route->getSections() as $section) {
-    echo $section->getStart()->getName() . PHP_EOL;
-    //orleans
-	//italie
+    echo $section->getStart()->getName() . '->' . $section->getEnd()->getName() . PHP_EOL;
+    //orleans->italie
+    //italie->bercy
 }
 
-//real time
+//reference time
 echo $route->getTimeReference() . PHP_EOL;
 //12
 
-//reference time
+//real time
 echo $route->getTime() . PHP_EOL;
 //6
 
 //kilometers
 echo $route->getKms() . PHP_EOL;
 //8
-
 ```
 
 If **time** is superior to the **TimeReference**, it means there is some traffic jams.
@@ -70,9 +65,8 @@ orleans
 italie
 bercy
 bagnolet
-
 ```
 
 ## Copyright
 
-No copyright, based & crawled on Sytadin website.
+No copyright, based & crawled on Sytadin website ([http://www.sytadin.fr](http://www.sytadin.fr))
