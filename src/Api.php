@@ -143,9 +143,9 @@ class Api
 
     private function calculateRoute()
     {
-        $referenceStart = array_search($this->route->getStart()->gate, Gate::listGates());
-        $referenceEnd = array_search($this->route->getEnd()->gate, Gate::listGates());
-
+        $referenceStart = array_search($this->route->getStart()->gate, Gate::listGates($this->route->getWay()));
+        $referenceEnd = array_search($this->route->getEnd()->gate, Gate::listGates($this->route->getWay()));
+        
         $dataCalculated = [
             'time' => 0,
             'timeReference' => 0,
@@ -153,7 +153,7 @@ class Api
         ];
 
         if ($referenceStart >= $referenceEnd) {
-            while ($referenceStart < count(Gate::listGates())) {
+            while ($referenceStart < count(Gate::listGates($this->route->getWay()))) {
                 $section = $this->sectionCollection->getItems($this->route->getWay(),
                     $referenceStart);
                 $this->route->setSection($section);
@@ -164,7 +164,7 @@ class Api
             }
             //and restart
             $cursor = 0;
-            while ($cursor <= $referenceEnd) {
+            while ($cursor < $referenceEnd) {
                 $section = $this->sectionCollection->getItems($this->route->getWay(), $cursor);
                 $this->route->setSection($section);
                 foreach ($section->getData() as $field => $number) {

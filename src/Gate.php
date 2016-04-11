@@ -38,10 +38,9 @@ class Gate
     /**
      * @return array
      */
-    public static function listGates()
+    public static function listGates($way = 'exterior')
     {
-        //order exterior way
-        return [
+        $gatesExterior = [
             'chapelle',
             'maillot',
             'auteuil',
@@ -50,6 +49,18 @@ class Gate
             'bercy',
             'bagnolet',
         ];
+
+        $gatesInterior = [
+            'chapelle',
+            'bagnolet',
+            'bercy',
+            'italie',
+            'orleans',
+            'auteuil',
+            'maillot',
+        ];
+
+        return $way == 'exterior' ? $gatesExterior : $gatesInterior;
     }
 
     /**
