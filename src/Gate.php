@@ -15,7 +15,8 @@ class Gate
 
     /**
      * Gate constructor.
-     * @param $gateName string
+     * @param $gateName
+     * @param $type
      */
     public function __construct($gateName, $type)
     {
@@ -36,6 +37,7 @@ class Gate
     }
 
     /**
+     * @param string $way
      * @return array
      */
     public static function listGates($way = 'exterior')

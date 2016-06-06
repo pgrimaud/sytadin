@@ -145,7 +145,7 @@ class Api
     {
         $referenceStart = array_search($this->route->getStart()->gate, Gate::listGates($this->route->getWay()));
         $referenceEnd = array_search($this->route->getEnd()->gate, Gate::listGates($this->route->getWay()));
-        
+
         $dataCalculated = [
             'time' => 0,
             'timeReference' => 0,
