@@ -1,6 +1,7 @@
 # Sytadin
 
 [![Packagist](https://img.shields.io/badge/packagist-install-brightgreen.svg)](https://packagist.org/packages/pgrimaud/sytadin)
+[![Build Status](https://travis-ci.org/pgrimaud/sytadin.svg?branch=master)](https://travis-ci.org/pgrimaud/sytadin)
 
 Real time information about road traffic on the Paris beltway.
 
