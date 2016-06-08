@@ -41,11 +41,12 @@ class Api
 
     /**
      * Api constructor.
+     * @param Client $client
      * @param null $entryPoint
      */
-    public function __construct($entryPoint = null)
+    public function __construct(Client $client = null, $entryPoint = null)
     {
-        $this->client = new Client();
+        $this->client = $client ?: new Client();
         $this->entryPoint = $entryPoint ?: 'http://www.sytadin.fr/sys/temps_de_parcours.jsp.html?type=secteur';
     }
 
@@ -59,7 +60,7 @@ class Api
         $this->client->setHeader('HTTP_USER_AGENT',
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0) Gecko/20100101 Firefox/45.0');
         $crawler = $this->client->request('GET', $this->entryPoint);
-
+        
         $crawler->filter('.tps_parcours.BP .secteurTable tbody tr td')->each(function (Crawler $node, $i) {
 
             $text = $node->text();

@@ -1,6 +1,7 @@
 <?php
 namespace Sytadin\Api\tests;
 
+use InvalidArgumentException;
 use Sytadin\Gate;
 
 class GateTest extends \PHPUnit_Framework_TestCase
@@ -9,7 +10,7 @@ class GateTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->gates->exterior = [
+        $this->gates['exterior'] = [
             'chapelle',
             'maillot',
             'auteuil',
@@ -19,7 +20,7 @@ class GateTest extends \PHPUnit_Framework_TestCase
             'bagnolet',
         ];
 
-        $this->gates->interior = [
+        $this->gates['interior'] = [
             'chapelle',
             'bagnolet',
             'bercy',
@@ -39,10 +40,22 @@ class GateTest extends \PHPUnit_Framework_TestCase
 
         foreach ($types as $type) {
             $gates = Gate::listGates($type);
-            foreach ($this->gates->{$type} as $gate) {
-
+            foreach ($this->gates[$type] as $gate) {
+                $this->assertContains($gate, $gates);
             }
         }
+    }
+
+    public function testGateGetter()
+    {
+        $gate = new Gate('chapelle', 'start');
+        $this->assertEquals('chapelle', $gate->getName());
+    }
+
+    public function testInvalidGate()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Gate('nop', 'start');
     }
 }
 
