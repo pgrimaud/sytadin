@@ -40,6 +40,16 @@ class Api
     private $sectionCollection;
 
     /**
+     * @var Gate
+     */
+    private $start;
+
+    /**
+     * @var Gate
+     */
+    private $end;
+
+    /**
      * Api constructor.
      * @param Client $client
      * @param null $entryPoint
@@ -60,7 +70,7 @@ class Api
         $this->client->setHeader('HTTP_USER_AGENT',
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0) Gecko/20100101 Firefox/45.0');
         $crawler = $this->client->request('GET', $this->entryPoint);
-        
+
         $crawler->filter('.tps_parcours.BP .secteurTable tbody tr td')->each(function (Crawler $node, $i) {
 
             $text = $node->text();
@@ -91,7 +101,6 @@ class Api
                 $gate = array_values($gate);
 
                 preg_match('/P.(.*)\(.*\)=>P.(.*)\(.*\)/x', $gate[0], $gates);
-
 
                 $section = new Section(new Gate(strtolower($gates[1]), 'start'),
                     new Gate(strtolower($gates[2]), 'end'),
@@ -158,9 +167,7 @@ class Api
                 $section = $this->sectionCollection->getItems($this->route->getWay(),
                     $referenceStart);
                 $this->route->setSection($section);
-                foreach ($section->getData() as $field => $number) {
-                    $dataCalculated[$field] += (int)$number;
-                }
+                $dataCalculated = $this->incrementValues($dataCalculated, $section->getData());
                 $referenceStart++;
             }
             //and restart
@@ -177,9 +184,7 @@ class Api
             while ($referenceStart < $referenceEnd) {
                 $section = $this->sectionCollection->getItems($this->route->getWay(), $referenceStart);
                 $this->route->setSection($section);
-                foreach ($section->getData() as $field => $number) {
-                    $dataCalculated[$field] += (int)$number;
-                }
+                $dataCalculated = $this->incrementValues($dataCalculated, $section->getData());
                 $referenceStart++;
             }
         }
@@ -196,4 +201,18 @@ class Api
     {
         return $this->route;
     }
+
+    /**
+     * @param $dataCalculated
+     * @param $data
+     * @return mixed
+     */
+    public function incrementValues($dataCalculated, $data)
+    {
+        foreach ($data as $field => $number) {
+            $dataCalculated[$field] += (int)$number;
+        }
+        return $dataCalculated;
+    }
+
 }
