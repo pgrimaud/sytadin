@@ -71,7 +71,7 @@ class Api
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0) Gecko/20100101 Firefox/45.0');
         $crawler = $this->client->request('GET', $this->entryPoint);
 
-        $crawler->filter('.tps_parcours.BP .secteurTable tbody tr td')->each(function (Crawler $node, $i) {
+        $crawler->filter('.tps_parcours.BP .secteurTable tbody tr td')->each(function(Crawler $node, $i) {
 
             $text = $node->text();
 
