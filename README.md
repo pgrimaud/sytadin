@@ -2,7 +2,7 @@
 
 [![Packagist](https://img.shields.io/badge/packagist-install-brightgreen.svg)](https://packagist.org/packages/pgrimaud/sytadin)
 [![Build Status](https://travis-ci.org/pgrimaud/sytadin.svg?branch=master)](https://travis-ci.org/pgrimaud/sytadin)
-[![Code Climate](https://codeclimate.com/github/pgrimaud/sytadin/badges/gpa.svg)](https://codeclimate.com/github/pgrimaud/sytadin)
+[![Code Climate](https://api.codeclimate.com/v1/badges/aa848579ebf71ac59399/maintainability)](https://codeclimate.com/github/pgrimaud/sytadin)
 [![Test Coverage](https://codeclimate.com/github/pgrimaud/sytadin/badges/coverage.svg)](https://codeclimate.com/github/pgrimaud/sytadin/coverage)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pgrimaud/sytadin/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pgrimaud/sytadin/?branch=master)
 
