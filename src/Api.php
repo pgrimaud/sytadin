@@ -25,7 +25,7 @@ class Api
     /**
      * @var array
      */
-    private array $dataFetched;
+    private array $dataFetched = [];
 
     /**
      * @var int
