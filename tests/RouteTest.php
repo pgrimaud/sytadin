@@ -1,11 +1,9 @@
 <?php
-namespace Sytadin\Api\tests;
 
-use Sytadin\Gate;
-use Sytadin\Route;
-use Sytadin\Section;
+use PHPUnit\Framework\TestCase;
+use Sytadin\{Gate, Route, Section};
 
-class RouteTest extends \PHPUnit_Framework_TestCase
+class RouteTest extends TestCase
 {
     public function testCreateRoute()
     {
@@ -32,11 +30,11 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $route->setSection($section);
         $this->assertCount(2, $route->getSections());
 
-        $route->setTime('8 min');
-        $this->assertSame('8 min', $route->getTime());
+        $route->setTime(8);
+        $this->assertSame(8, $route->getTime());
 
-        $route->setTimeReference('5 min');
-        $this->assertSame('5 min', $route->getTimeReference());
+        $route->setTimeReference(5);
+        $this->assertSame(5, $route->getTimeReference());
 
     }
 }

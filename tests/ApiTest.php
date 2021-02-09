@@ -1,25 +1,22 @@
 <?php
-namespace Sytadin\Api\tests;
 
 use Goutte\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
-use InvalidArgumentException;
+use GuzzleHttp\{Handler\MockHandler, HandlerStack, Psr7\Response};
+use PHPUnit\Framework\TestCase;
 use Sytadin\Api;
 
-class ApiTest extends \PHPUnit_Framework_TestCase
+class ApiTest extends TestCase
 {
     private $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         $fixtures = file_get_contents(__DIR__ . '/fixtures/sytadin.html');
 
         $response = new Response(200, [], $fixtures);
-        $mock = new MockHandler([$response]);
+        $mock     = new MockHandler([$response]);
 
-        $handler = HandlerStack::create($mock);
+        $handler      = HandlerStack::create($mock);
         $guzzleClient = new \GuzzleHttp\Client(['handler' => $handler]);
 
         $this->client = new Client();
@@ -31,9 +28,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->client);
 
         $parameters = [
-            'start' => 'orleans',
-            'end' => 'bercy',
-            'direction' => $api::DIRECTION_EXTERIOR
+            'start'     => 'orleans',
+            'end'       => 'bercy',
+            'direction' => $api::DIRECTION_EXTERIOR,
         ];
 
         $api->setParameters($parameters);
@@ -49,9 +46,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->client);
 
         $parameters = [
-            'end' => 'orleans',
-            'start' => 'bercy',
-            'direction' => $api::DIRECTION_EXTERIOR
+            'end'       => 'orleans',
+            'start'     => 'bercy',
+            'direction' => $api::DIRECTION_EXTERIOR,
         ];
 
         $api->setParameters($parameters);
@@ -69,9 +66,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->client);
 
         $parameters = [
-            'end' => '',
-            'start' => '',
-            'direction' => $api::DIRECTION_EXTERIOR
+            'end'       => '',
+            'start'     => '',
+            'direction' => $api::DIRECTION_EXTERIOR,
         ];
 
         $api->setParameters($parameters);
@@ -84,9 +81,9 @@ class ApiTest extends \PHPUnit_Framework_TestCase
         $api = new Api($this->client);
 
         $parameters = [
-            'end' => 'bercy',
-            'start' => 'orleans',
-            'direction' => 'nop'
+            'end'       => 'bercy',
+            'start'     => 'orleans',
+            'direction' => 'nop',
         ];
 
         $api->setParameters($parameters);

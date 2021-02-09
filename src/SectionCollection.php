@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Sytadin;
 
 class SectionCollection
@@ -6,19 +9,24 @@ class SectionCollection
     /**
      * @var array
      */
-    private $items;
+    private array $items;
 
-    public function add(Section $section, $type)
+    /**
+     * @param Section $section
+     * @param string $type
+     */
+    public function add(Section $section, string $type): void
     {
         $this->items[$type][] = $section;
     }
 
     /**
-     * @param null $type
-     * @param null $key
-     * @return mixed
+     * @param string|null $type
+     * @param int|null $key
+     *
+     * @return array|mixed
      */
-    public function getItems($type = null, $key = null)
+    public function getItems(string $type = null, int $key = null)
     {
         if ($type && $key !== null) {
             return $this->items[$type][$key];

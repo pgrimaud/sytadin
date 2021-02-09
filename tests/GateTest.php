@@ -1,14 +1,13 @@
 <?php
-namespace Sytadin\Api\tests;
 
-use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use Sytadin\Gate;
 
-class GateTest extends \PHPUnit_Framework_TestCase
+class GateTest extends TestCase
 {
     private $gates;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->gates['exterior'] = [
             'chapelle',
@@ -35,7 +34,7 @@ class GateTest extends \PHPUnit_Framework_TestCase
     {
         $types = [
             'exterior',
-            'interior'
+            'interior',
         ];
 
         foreach ($types as $type) {

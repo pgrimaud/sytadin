@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Sytadin;
 
 class Route
@@ -6,55 +9,54 @@ class Route
     /**
      * @var Gate
      */
-    private $start;
+    private Gate $start;
 
     /**
      * @var Gate
      */
-    private $end;
+    private Gate $end;
 
     /**
      * @var string
      */
-    private $way;
+    private string $way;
 
     /**
      * @var array
      */
-    private $sections = [];
+    private array $sections = [];
 
     /**
-     * @var integer
+     * @var int
      */
-    private $time;
+    private int $time;
 
     /**
-     * @var integer
+     * @var int
      */
-    private $timeReference;
+    private int $timeReference;
 
     /**
-     * @var integer
+     * @var int
      */
-    private $kms;
+    private int $kms;
 
     /**
-     * Route constructor.
      * @param Gate $start
      * @param Gate $end
-     * @param $way
+     * @param string $way
      */
-    public function __construct(Gate $start, Gate $end, $way)
+    public function __construct(Gate $start, Gate $end, string $way)
     {
         $this->start = $start;
-        $this->end = $end;
-        $this->way = $way;
+        $this->end   = $end;
+        $this->way   = $way;
     }
 
     /**
      * @return Gate
      */
-    public function getStart()
+    public function getStart(): Gate
     {
         return $this->start;
     }
@@ -62,7 +64,7 @@ class Route
     /**
      * @return Gate
      */
-    public function getEnd()
+    public function getEnd(): Gate
     {
         return $this->end;
     }
@@ -70,7 +72,7 @@ class Route
     /**
      * @return string
      */
-    public function getWay()
+    public function getWay(): string
     {
         return $this->way;
     }
@@ -78,7 +80,7 @@ class Route
     /**
      * @param Section $section
      */
-    public function setSection(Section $section)
+    public function setSection(Section $section): void
     {
         $this->sections[] = $section;
     }
@@ -86,7 +88,7 @@ class Route
     /**
      * @return array
      */
-    public function getSections()
+    public function getSections(): array
     {
         return $this->sections;
     }
@@ -94,7 +96,7 @@ class Route
     /**
      * @param int $time
      */
-    public function setTime($time)
+    public function setTime(int $time): void
     {
         $this->time = $time;
     }
@@ -102,7 +104,7 @@ class Route
     /**
      * @return int
      */
-    public function getTime()
+    public function getTime(): int
     {
         return $this->time;
     }
@@ -110,7 +112,7 @@ class Route
     /**
      * @param int $timeReference
      */
-    public function setTimeReference($timeReference)
+    public function setTimeReference(int $timeReference): void
     {
         $this->timeReference = $timeReference;
     }
@@ -118,7 +120,7 @@ class Route
     /**
      * @return int
      */
-    public function getTimeReference()
+    public function getTimeReference(): int
     {
         return $this->timeReference;
     }
@@ -126,7 +128,7 @@ class Route
     /**
      * @param int $kms
      */
-    public function setKms($kms)
+    public function setKms(int $kms): void
     {
         $this->kms = $kms;
     }
@@ -134,7 +136,7 @@ class Route
     /**
      * @return int
      */
-    public function getKms()
+    public function getKms(): int
     {
         return $this->kms;
     }

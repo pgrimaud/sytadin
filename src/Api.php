@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Sytadin;
 
 use Goutte\Client;
@@ -6,64 +9,63 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class Api
 {
-    CONST DIRECTION_INTERIOR = 'interior';
-    CONST DIRECTION_EXTERIOR = 'exterior';
+    const DIRECTION_INTERIOR = 'interior';
+    const DIRECTION_EXTERIOR = 'exterior';
 
     /**
      * @var Client
      */
-    private $client;
+    private Client $client;
 
     /**
      * @var string
      */
-    private $entryPoint;
+    private string $entryPoint;
 
     /**
      * @var array
      */
-    private $dataFetched;
+    private array $dataFetched;
 
     /**
-     * @var integer
+     * @var int
      */
-    private $row = -1;
+    private int $row = -1;
 
     /**
      * @var Route
      */
-    private $route;
+    private Route $route;
 
     /**
      * @var SectionCollection
      */
-    private $sectionCollection;
+    private SectionCollection $sectionCollection;
 
     /**
      * @var Gate
      */
-    private $start;
+    private Gate $start;
 
     /**
      * @var Gate
      */
-    private $end;
+    private Gate $end;
 
     /**
-     * Api constructor.
-     * @param Client $client
-     * @param null $entryPoint
+     * @param Client|null $client
+     * @param string|null $entryPoint
      */
-    public function __construct(Client $client = null, $entryPoint = null)
+    public function __construct(Client $client = null, string $entryPoint = null)
     {
-        $this->client = $client ?: new Client();
+        $this->client     = $client ?: new Client();
         $this->entryPoint = $entryPoint ?: 'http://www.sytadin.fr/sys/temps_de_parcours.jsp.html?type=secteur';
     }
 
     /**
      * @param array $parameters
      */
-    public function setParameters($parameters = [])
+    public function setParameters(array $parameters = []): void
     {
         $this->validParameters($parameters);
 
@@ -71,15 +73,15 @@ class Api
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:45.0) Gecko/20100101 Firefox/45.0');
         $crawler = $this->client->request('GET', $this->entryPoint);
 
-        $crawler->filter('.tps_parcours.BP .secteurTable tbody tr td')->each(function(Crawler $node, $i) {
+        $crawler->filter('.tps_parcours.BP .secteurTable tbody tr td')->each(function (Crawler $node, $i) {
 
             $text = $node->text();
 
             if (!($i % 7)) {
                 $this->row++;
             } else {
-                $way = ($i <= 49) ? self::DIRECTION_EXTERIOR : self::DIRECTION_INTERIOR;
-                $text = str_replace(["é", "\n", "\r", "\t", " "], ['e', ''], $text);
+                $way                                   = ($i <= 49) ? self::DIRECTION_EXTERIOR : self::DIRECTION_INTERIOR;
+                $text                                  = str_replace(["é", "\n", "\r", "\t", " "], ['e', ''], $text);
                 $this->dataFetched[$this->row][$way][] = $text;
             }
 
@@ -89,9 +91,9 @@ class Api
         $this->calculateRoute();
     }
 
-    private function sanitizeContent()
+    private function sanitizeContent(): void
     {
-        $results = $this->dataFetched;
+        $results                 = $this->dataFetched;
         $this->sectionCollection = new SectionCollection();
 
         foreach ($results as $way) {
@@ -105,9 +107,9 @@ class Api
                 $section = new Section(new Gate(strtolower($gates[1]), 'start'),
                     new Gate(strtolower($gates[2]), 'end'),
                     [
-                        'time' => (int)str_replace('mn', '', $gate[1]),
+                        'time'          => (int)str_replace('mn', '', $gate[1]),
                         'timeReference' => (int)str_replace('mn', '', $gate[2]),
-                        'kms' => (int)$gate[3]
+                        'kms'           => (int)$gate[3],
                     ]);
 
                 $this->sectionCollection->add($section, $wayName);
@@ -119,12 +121,12 @@ class Api
      * @param array $parameters
      * @throws \InvalidArgumentException
      */
-    public function validParameters($parameters = [])
+    public function validParameters(array $parameters = []): void
     {
         $fieldsToCheck = [
             'start',
             'end',
-            'direction'
+            'direction',
         ];
 
         foreach ($fieldsToCheck as $field) {
@@ -135,7 +137,7 @@ class Api
 
         $gatesToCheck = [
             'start',
-            'end'
+            'end',
         ];
 
         foreach ($gatesToCheck as $gate) {
@@ -151,15 +153,15 @@ class Api
         }
     }
 
-    private function calculateRoute()
+    private function calculateRoute(): void
     {
         $referenceStart = array_search($this->route->getStart()->gate, Gate::listGates($this->route->getWay()));
-        $referenceEnd = array_search($this->route->getEnd()->gate, Gate::listGates($this->route->getWay()));
+        $referenceEnd   = array_search($this->route->getEnd()->gate, Gate::listGates($this->route->getWay()));
 
         $dataCalculated = [
-            'time' => 0,
+            'time'          => 0,
             'timeReference' => 0,
-            'kms' => 0
+            'kms'           => 0,
         ];
 
         if ($referenceStart >= $referenceEnd) {
@@ -197,17 +199,18 @@ class Api
     /**
      * @return Route
      */
-    public function getRoute()
+    public function getRoute(): Route
     {
         return $this->route;
     }
 
     /**
-     * @param $dataCalculated
-     * @param $data
-     * @return mixed
+     * @param array $dataCalculated
+     * @param array $data
+     *
+     * @return array
      */
-    public function incrementValues($dataCalculated, $data)
+    public function incrementValues(array $dataCalculated, array $data): array
     {
         foreach ($data as $field => $number) {
             $dataCalculated[$field] += (int)$number;

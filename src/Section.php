@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Sytadin;
 
 class Section
@@ -6,29 +9,34 @@ class Section
     /**
      * @var Gate
      */
-    private $start;
+    private Gate $start;
 
     /**
      * @var Gate
      */
-    private $end;
+    private Gate $end;
 
     /**
      * @var array
      */
-    private $data;
+    private array $data;
 
-    public function __construct(Gate $start, Gate $end, $data)
+    /**
+     * @param Gate $start
+     * @param Gate $end
+     * @param array $data
+     */
+    public function __construct(Gate $start, Gate $end, array $data)
     {
         $this->start = $start;
-        $this->end = $end;
-        $this->data = $data;
+        $this->end   = $end;
+        $this->data  = $data;
     }
 
     /**
      * @return Gate
      */
-    public function getStart()
+    public function getStart(): Gate
     {
         return $this->start;
     }
@@ -36,7 +44,7 @@ class Section
     /**
      * @return Gate
      */
-    public function getEnd()
+    public function getEnd(): Gate
     {
         return $this->end;
     }
@@ -44,7 +52,7 @@ class Section
     /**
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -52,7 +60,7 @@ class Section
     /**
      * @return string
      */
-    public function getTime()
+    public function getTime(): string
     {
         return $this->data['time'];
     }
@@ -60,15 +68,15 @@ class Section
     /**
      * @return string
      */
-    public function getTimeReference()
+    public function getTimeReference(): string
     {
         return $this->data['timeReference'];
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getKms()
+    public function getKms(): int
     {
         return $this->data['kms'];
     }

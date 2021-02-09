@@ -1,20 +1,19 @@
 <?php
-namespace Sytadin\Api\tests;
 
-use Sytadin\Gate;
-use Sytadin\Section;
+use PHPUnit\Framework\TestCase;
+use Sytadin\{Gate, Section};
 
-class SectionTest extends \PHPUnit_Framework_TestCase
+class SectionTest extends TestCase
 {
     public function testCreateSection()
     {
         $startGate = new Gate('chapelle', 'start');
-        $endGate = new Gate('orleans', 'end');
+        $endGate   = new Gate('orleans', 'end');
 
         $data = [
-            'time' => '8 min',
+            'time'          => '8 min',
             'timeReference' => '5 min',
-            'kms' => 5
+            'kms'           => 5,
         ];
 
         $section = new Section($startGate, $endGate, $data);

@@ -1,17 +1,15 @@
 <?php
-namespace Sytadin\Api\tests;
 
-use Sytadin\Gate;
-use Sytadin\Section;
-use Sytadin\SectionCollection;
+use PHPUnit\Framework\TestCase;
+use Sytadin\{Gate, Section, SectionCollection};
 
-class SectionCollectionTest extends \PHPUnit_Framework_TestCase
+class SectionCollectionTest extends TestCase
 {
     public function testAddGateToCollection()
     {
         $startGate = new Gate('chapelle', 'start');
-        $endGate = new Gate('orleans', 'end');
-        $section = new Section($startGate, $endGate, []);
+        $endGate   = new Gate('orleans', 'end');
+        $section   = new Section($startGate, $endGate, []);
 
         $collection = new SectionCollection();
         $collection->add($section, 'interior');
