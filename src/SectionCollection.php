@@ -11,9 +11,14 @@ class SectionCollection
      */
     private array $items;
 
+    public function __construct()
+    {
+        $this->items = [];
+    }
+
     /**
      * @param Section $section
-     * @param string $type
+     * @param string  $type
      */
     public function add(Section $section, string $type): void
     {
@@ -22,7 +27,7 @@ class SectionCollection
 
     /**
      * @param string|null $type
-     * @param int|null $key
+     * @param int|null    $key
      *
      * @return array|mixed
      */
