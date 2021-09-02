@@ -9,12 +9,7 @@ class SectionCollection
     /**
      * @var array
      */
-    private array $items;
-
-    public function __construct()
-    {
-        $this->items = [];
-    }
+    private array $items = [];
 
     /**
      * @param Section $section
